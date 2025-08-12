@@ -1,19 +1,19 @@
-from typing import TypedDict
+from pydantic import BaseModel, Field
 from langgraph.graph import END, START, StateGraph
 
 
-class HelloWorldState(TypedDict):
-    message: str
+class HelloWorldState(BaseModel):
+    message: str = Field(min_length=3, max_length=50)
 
 
 def hello(state: HelloWorldState):
-    print(f"Hello Node: {state['message']}")
-    return {"message": "Hello " + state["message"]}
+    print(f"Hello Node: {state.message}")
+    return {"message": "Hello " + state.message}
 
 
 def bye(state: HelloWorldState):
-    print(f"Bye Node: {state['message']}")
-    return {"message": "Bye " + state["message"]}
+    print(f"Bye Node: {state.message}")
+    return {"message": "Bye " + state.message}
 
 
 graph = StateGraph(HelloWorldState)

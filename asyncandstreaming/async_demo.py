@@ -7,16 +7,18 @@ class HelloWorldState(TypedDict):
     message: str
 
 
-def hello(state: HelloWorldState):
+async def hello(state: HelloWorldState):
     print(f"Hello Node: {state['message']}")
     # TODO: Simulate Async Processing
-    return {"message": "Hello " + state['message']}
+    await asyncio.sleep(1)  # Simulating async processing
+    return {"message": "Hello " + state["message"]}
 
 
-def bye(state: HelloWorldState):
+async def bye(state: HelloWorldState):
     print(f"Bye Node: {state['message']}")
     # TODO: Simulate Async Processing
-    return {"message": "Bye " + state['message']}
+    await asyncio.sleep(3)  # Simulating async processing
+    return {"message": "Bye " + state["message"]}
 
 
 graph = StateGraph(HelloWorldState)
@@ -31,3 +33,9 @@ runnable = graph.compile()
 
 
 # TODO: Async Invocation
+async def main():
+    output = await runnable.ainvoke({"message": "World"})
+    print(f"Final Output: {output['message']}")
+
+
+asyncio.run(main())

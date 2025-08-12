@@ -1,0 +1,14 @@
+langchain
+langgraph
+langchain-openai
+langchain-ollama
+langchain-chroma
+langchain-community
+pillow
+ipython
+psycopg
+langgraph-checkpoint-postgres
+chainlit
+fastapi
+uvicorn
+beautifulsoup4

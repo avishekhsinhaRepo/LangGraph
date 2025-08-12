@@ -1,0 +1,11 @@
+1) patient_id: 46581382
+treatment_code: Z12.31
+claim_details: Routine screening colonoscopy performed on patient aged 50, as part of preventive care.
+
+2) patient_id: 46581424
+treatment_code: M54.5
+claim_details: Elective spinal surgery performed due to chronic lower back pain at a facility previously flagged for fraudulent claims.
+
+3) patient_id: 46581445
+treatment_code: 83036
+claim_details: Patient requested third Hemoglobin A1c test within one year. Physician justification is pending.

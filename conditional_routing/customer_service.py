@@ -10,8 +10,16 @@ class SupportRequest(TypedDict):
 
 # Function to categorize the support request
 def categorize_request(request: SupportRequest):
-    print(f"Received request: {request}")
     # TODO: Implement Conditional Routing
+    print(f"Received request: {request}")
+    if request["priority"] == 1:
+        return "handle_urgent"
+    elif request["priority"] == 2:
+        return "handle_standard"
+    else:
+        print("Low priority request, no action taken.")
+        return END  # No further action for low priority requests
+    
     
 
 # Function to process high-priority requests
@@ -29,7 +37,13 @@ def handle_standard(request: SupportRequest):
 # Create the state graph
 graph = StateGraph(SupportRequest)
 # TODO: Create the graph
+graph.add_node("handle_urgent", handle_urgent)
+graph.add_node("handle_standard", handle_standard)
 
+
+graph.add_conditional_edges(START, categorize_request)
+graph.add_edge("handle_urgent", END)
+graph.add_edge("handle_standard", END)
 
 runnable = graph.compile()
 

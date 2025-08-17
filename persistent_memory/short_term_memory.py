@@ -76,7 +76,15 @@ workflow.add_edge(START, "agent")
 workflow.add_conditional_edges("agent", should_continue)
 workflow.add_edge("tools", "agent")
 
-graph = workflow.compile()
+checkpointer = MemorySaver()
+
+graph = workflow.compile(checkpointer=checkpointer)
+
+config = {
+    "configurable": {
+        "thread_id": "1",
+    }
+}  # Define configuration for memory
 
 # display(graph)
 # First invoke - Get one restaurant recommendation
@@ -85,12 +93,24 @@ response = graph.invoke(
         "messages": [
             HumanMessage(
                 content="Can you recommend jst one top restaurant in Munich? "
-                "The response should contain just the restaurant name"
+                "The response should contain just the restaurant name",
             )
         ]
-    }
+    },
+    config=config,
 )
 
 # TODO: Extract the recommended restaurant
 recommended_resturant = response["messages"][-1].content
 print(recommended_resturant)
+
+
+# Second invoke - Book Table
+response = graph.invoke(
+    {"messages": [HumanMessage(content="Book a table at this restaurant for 7 PM")]},
+    config=config,
+)
+
+# TODO: Extract the recommended restaurant
+book_table = response["messages"][-1].content
+print(book_table)

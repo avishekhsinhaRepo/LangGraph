@@ -1,11 +1,29 @@
 from typing import List, TypedDict
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langgraph.types import interrupt
 from langgraph.types import Command
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Set your Azure OpenAI credentials
+subscription_key = os.environ["AZURE_OPENAI_API_KEY"]
+endpoint = os.environ["AZURE_OPENAI_ENDPOINT"]
+api_version = os.environ["AZURE_OPENAI_API_VERSION"]
+deployment = os.environ["AZURE_OPENAI_DEPLOYMENT"]
+
+# Initialize the Azure OpenAI LLM
+model = AzureChatOpenAI(
+    azure_deployment=deployment,
+    api_version=api_version,
+    azure_endpoint=endpoint,
+    api_key=subscription_key,
+)
 
 
 class CodingAssistantState(TypedDict):
@@ -14,10 +32,10 @@ class CodingAssistantState(TypedDict):
     tests: str
 
 
-model = ChatOpenAI()
-
 code_prompt = ChatPromptTemplate.from_template("Generate Python code for: {task}")
-test_prompt = ChatPromptTemplate.from_template("Write unit tests for this code:\n{code}")
+test_prompt = ChatPromptTemplate.from_template(
+    "Write unit tests for this code:\n{code}"
+)
 
 code_chain = code_prompt | model | StrOutputParser()
 test_chain = test_prompt | model | StrOutputParser()

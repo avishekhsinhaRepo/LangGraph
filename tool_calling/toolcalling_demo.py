@@ -3,6 +3,7 @@ from langchain_core.tools import tool
 from langchain_openai import AzureChatOpenAI
 import os
 from dotenv import load_dotenv
+from langchain.agents.output_parsers import ReActSingleInputOutputParser
 
 load_dotenv()
 
@@ -37,10 +38,11 @@ llm = AzureChatOpenAI(
 # TODO: Bind the tool to the model
 tools = [get_restaurant_recommendations]
 
-lllm_with_tools = llm.bind_tools(tools)
+llm_with_tools = llm.bind_tools(tools)
 
 messages = [HumanMessage("Recommend some restaurants in Munich.")]
 
+
 # TODO: Invoke the llm
-llm_output = lllm_with_tools.invoke(messages)
-print("LLM Output:", llm_output.content)
+llm_output = llm_with_tools.invoke(messages)
+print("LLM Raw Output:", llm_output)

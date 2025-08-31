@@ -7,8 +7,9 @@ from langchain_core.messages import AIMessage, HumanMessage
 
 # Define chatbot state with accumulated messages
 class ChatBotState(TypedDict):
-    messages: list[AnyMessage]
-    discount: int
+    messages: Annotated[list[AnyMessage], add]
+    discount: Annotated[int, add]
+
 
 
 # Responses based on intent level
